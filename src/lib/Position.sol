@@ -23,7 +23,4 @@ library Position {
             keccak256(abi.encodePacked(owner, lowerTick, upperTick))
         ];
     }
-    // Trick, hash together keys instead of using them as separate
-    // also save on nested mappings
-    // Another trick, group storage variables
 }
