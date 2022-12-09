@@ -24,7 +24,11 @@ contract UniswapV3Pool {
     // Pool tokens, immutable
     address public immutable token0;
     address public immutable token1;
-
+    struct CallbackData {
+        address token0;
+        address token1;
+        address payer;
+    }
     // Packing variables that are read together
     struct Slot0 {
         // current sqrt(P)
@@ -51,7 +55,7 @@ contract UniswapV3Pool {
 
     error InvalidTickRange();
     error ZeroLiquidity();
-    error InsufficientInputAmount();
+    error InsufficientInputAmount(uint8 data, uint256 amount, uint256 balance);
 
     constructor(
         address token0_,
@@ -103,11 +107,11 @@ contract UniswapV3Pool {
             amount1
         );
 
-        if (amount > 0 && balance0Before + amount > balance0())
-            revert InsufficientInputAmount();
+        if (amount0 > 0 && balance0Before + amount0 > balance0())
+            revert InsufficientInputAmount(0, amount0, balance0());
 
-        if (amount > 0 && balance1Before + amount > balance1())
-            revert InsufficientInputAmount();
+        if (amount1 > 0 && balance1Before + amount1 > balance1())
+            revert InsufficientInputAmount(1, amount1, balance1());
 
         emit Mint(
             msg.sender,

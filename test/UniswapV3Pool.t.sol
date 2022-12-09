@@ -2,9 +2,10 @@
 pragma solidity ^0.8.14;
 
 import "forge-std/Test.sol";
+import {console} from "forge-std/console.sol";
 
 import "../src/UniswapV3Pool.sol";
-import "./ERC20Mintable.t.sol";
+import "./ERC20Mintable.sol";
 
 contract UniswapV3PoolTest is Test {
     ERC20Mintable token0;
@@ -32,9 +33,9 @@ contract UniswapV3PoolTest is Test {
     function setupTestCase(
         TestCaseParams memory params
     ) internal returns (uint256 poolBalance0, uint256 poolBalance1) {
-        setUp();
         token0.mint(address(this), params.wethBalance);
         token1.mint(address(this), params.usdcBalance);
+        shouldTransferInCallback = params.shouldTransferInCallback;
 
         pool = new UniswapV3Pool(
             address(token0),
@@ -51,8 +52,6 @@ contract UniswapV3PoolTest is Test {
                 params.liquidity
             );
         }
-
-        shouldTransferInCallback = params.shouldTransferInCallback;
     }
 
     function uniswapV3MintCallback(uint256 amount0, uint256 amount1) public {
