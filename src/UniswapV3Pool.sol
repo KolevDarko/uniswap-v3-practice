@@ -3,14 +3,7 @@ pragma solidity ^0.8.14;
 
 import "./lib/Tick.sol";
 import "./lib/Position.sol";
-
-interface IERC20 {
-    function balanceOf(address) external returns (uint256);
-
-    function transfer(address, uint256) external;
-
-    function transferFrom(address from, address to, uint256 amount) external;
-}
+import "./interfaces/IERC20.sol";
 
 interface IUniswapV3MintCallback {
     function uniswapV3MintCallback(
